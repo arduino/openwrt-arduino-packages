@@ -1,12 +1,9 @@
 #!/bin/sh
 
-PATH=$PATH:/bin:/sbin:/usr/bin
-
 blink-start 100
 
 reset_has_fo=true
 
-./sbin/firstboot
+/sbin/firstboot
 
-reboot
-
+/sbin/reboot
