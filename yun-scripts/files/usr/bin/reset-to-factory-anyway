@@ -4,6 +4,6 @@ blink-start 100
 
 reset_has_fo=true
 
-/sbin/firstboot
+yes | /sbin/firstboot
 
 /sbin/reboot
