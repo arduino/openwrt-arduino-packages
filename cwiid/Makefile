@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cwiid
 PKG_VERSION:=0.6.00
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tgz
 PKG_SOURCE_URL:=http://abstrakraft.org/cwiid/downloads/
@@ -47,7 +47,7 @@ $(call Package/cwiid/Default)
   SECTION:=lang
   CATEGORY:=Languages
   TITLE:=Python bindings for the cwiid libs
-  DEPENDS:= +python-mini +libcwiid
+  DEPENDS:= +libcwiid +python
 endef
 
 CONFIGURE_ARGS += \
@@ -88,7 +88,7 @@ endef
 
 define Package/libcwiid/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_BUILD_DIR)/libcwiid/libcwiid.so.1.0 $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/libcwiid/libcwiid.so.1* $(1)/usr/lib/
 endef
 
 define Package/wminput/install
