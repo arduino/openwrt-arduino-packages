@@ -1,9 +1,11 @@
---- a/package.json	2014-09-29 23:42:31.000000000 +0200
-+++ b/package.json	2014-10-24 15:21:36.565737846 +0200
-@@ -51,7 +51,7 @@
+Index: tmp/package.json
+===================================================================
+--- tmp.orig/package.json	2015-11-03 00:31:22.000000000 +0100
++++ tmp/package.json	2016-01-23 22:34:28.480543081 +0100
+@@ -49,7 +49,7 @@
      },
-     "engineStrict": true,
      "scripts": {
+         "prepublish":"npm ls",
 -        "install": "node-pre-gyp install --fallback-to-build",
 +        "install": "node-pre-gyp reinstall --build-from-source --target_arch=mips",
          "pretest": "node test/support/createdb.js",
