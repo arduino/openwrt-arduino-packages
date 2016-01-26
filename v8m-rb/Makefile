@@ -9,11 +9,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=v8m-rb
 PKG_VERSION:=3.14.5-git
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/paul99/v8m-rb.git
-PKG_SOURCE_VERSION:=85657c5cddfa73d8fd8dafbd78c829c2d51fab4b
+PKG_SOURCE_VERSION:=dm-mipsbe-3.14
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
@@ -25,7 +25,7 @@ define Package/v8m-rb
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=Google v8 javascript engine
-  URL:=https://github.com/paul99/v8m-rb/tree/dm-dev-mipsbe
+  URL:=https://github.com/paul99/v8m-rb/tree/dm-mipsbe-3.14
   DEPENDS:=+libstdcpp +libc +libpthread
 endef
 
@@ -48,7 +48,7 @@ define Build/Compile
 	PATH="/usr/bin/:$(PATH)" \
 	GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions=false" \
 	LDFLAGS="-L$(TOOLCHAIN_DIR)/lib/ -Wl,-rpath-link $(TOOLCHAIN_DIR)/lib/" \
-	$(MAKE) $(PKG_JOBS) -C $(PKG_BUILD_DIR) DESTDIR="$(PKG_INSTALL_DIR)" mips.release library=shared werror=no snapshot=off
+	$(MAKE) $(PKG_JOBS) -C $(PKG_BUILD_DIR) DESTDIR="$(PKG_INSTALL_DIR)" mips.release library=shared snapshot=off
 endef
 
 define Package/v8m-rb/install
