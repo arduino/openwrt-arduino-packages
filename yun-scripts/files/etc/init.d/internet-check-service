@@ -1,0 +1,30 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=99
+
+status() {
+	oi=$(pidof internet-check)
+	if [ "x$oi" == "x" ]; then
+		echo "internet-check is not running"
+	else
+		echo "internet-check is running ($oi)"
+	fi
+}
+
+start() {
+	oi=$(pidof internet-check)
+	if [ "x$oi" == "x" ]; then
+		echo "Start internet-check"
+		nice -n 10 /usr/bin/internet-check &
+	else
+		echo "internet-check is already running ($oi)"
+	fi
+}
+
+stop() {
+	kill $(pidof internet-check)
+}
+
+EXTRA_COMMANDS="status"
+EXTRA_HELP="		status  Print the status of the service"

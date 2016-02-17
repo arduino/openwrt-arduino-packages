@@ -1,0 +1,38 @@
+#!/bin/sh
+. /usr/bin/get-gpio-conf
+
+# Check 'internet' status, for now it pings default gateway
+# If ping succeeds turn on SYSTEM LED, if fails - blink at 1Hz
+
+CHECK_DELAY=60
+
+led_on(){
+	echo 'default-on' > /sys/class/leds/$LED_RESET_BLINK/trigger
+}
+
+while [ true ]
+do
+	gw_ips=`netstat -r | grep default | awk '{print $2}'`
+	ping_ok=0
+	for ip in $gw_ips;
+	do
+		if [ "x$ip" != "x" ]
+		then
+			ping -c 1 -q $ip > /dev/null 2>&1
+			ping_res=$?
+			if [ $ping_res = 0 ]
+			then
+				ping_ok=1
+			fi
+		fi
+	done
+	
+	if [ $ping_ok = 1 ]
+	then
+		led_on
+	else
+		blink-start 1000 system
+	fi
+
+	sleep $CHECK_DELAY
+done

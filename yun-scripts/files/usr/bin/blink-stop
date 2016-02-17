@@ -1,4 +1,11 @@
 #!/bin/sh
 
-echo "none" > /sys/class/leds/ds:green:wlan/trigger
+. /usr/bin/get-gpio-conf
 
+LED=$LED_USER
+if [ "$1" = "system" ]
+then
+	LED=$LED_RESET_BLINK
+fi
+
+echo "none" > /sys/class/leds/$LED/trigger

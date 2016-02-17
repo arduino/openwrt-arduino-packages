@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. /usr/bin/get-gpio-conf
+
+echo 'default-on' > /sys/class/leds/$LED_USER/trigger

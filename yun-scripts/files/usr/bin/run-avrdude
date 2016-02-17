@@ -1,13 +1,74 @@
 #!/bin/sh
 
-echo 1 > /sys/class/gpio/gpio21/value
-avrdude  -q -q -c linuxgpio -C /etc/avrdude.conf -p m32u4 -U efuse:r:/tmp/efuse:d
-read EFUSE < /tmp/efuse
-rm -f /tmp/efuse
-if [ "x$EFUSE" = "x203" ] # 203 = 0xCB
+. /usr/bin/get-gpio-conf
+
+HEX=$1
+
+OPTIND=3
+while getopts ":qvp:l:h:e:" optname
+do
+	case "$optname" in
+	"q")
+		VERBOSE="-q -q"
+	;;
+	"v")
+		VERBOSE="-v"
+	;;
+	"p")
+		MCU=$OPTARG
+	;;
+	"l")
+		FUSES_LOW=$OPTARG
+	;;
+	"h")
+		FUSES_HIGH=$OPTARG
+	;;
+	"e")
+		FUSES_EXT=$OPTARG
+	;;
+	"?")
+		echo "Unknown option $OPTARG"
+	;;
+	":")
+		echo "No argument value for option $OPTARG"
+		exit 1
+	;;
+	*)
+		# Should not occur
+		echo "Unknown error while processing options"
+	;;
+	esac
+done
+
+#if no arguments given for MCU and FUSES, assume ATmega32U4
+if [ "x$FUSES_LOW" = "x" -a "x$FUSES_HIGH" = "x" -a "x$FUSES_EXT" = "x" -a "x$MCU" = "x" ]
 then
-	avrdude -c linuxgpio -C /etc/avrdude.conf -p m32u4 -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xCB:m -Uflash:w:$1:i $2
-else
-	avrdude -c linuxgpio -C /etc/avrdude.conf -p m32u4 -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xFB:m -Uflash:w:$1:i $2
+	MCU="m32u4"
+	FUSES_LOW="0xFF"
+	FUSES_HIGH="0xD8"
 fi
-echo 0 > /sys/class/gpio/gpio21/value
+
+echo 1 > /sys/class/gpio/gpio$GPIO_SPI_OE/value
+
+#convert $MCU to lowercase for safer comparison
+MCU=$(echo $MCU | awk '{print tolower($0)}')
+#if MCU is ATmega32U4 read actual efuse before flashing
+if [ "x$MCU" = "xm32u4" -o "x$MCU" = "xatmega32u4" ]
+then
+	MCU="m32u4"
+	avrdude  -q -q -c linuxgpio -C $AVRDUDE_CONF -p m32u4 -U efuse:r:/tmp/efuse:d
+	read EFUSE < /tmp/efuse
+	rm -f /tmp/efuse
+fi
+
+if [ "x$EFUSE" = "x203" -a "x$MCU" = "xm32u4" ] # 203 = 0xCB
+then
+	FUSES_EXT="0xCB"
+fi
+
+avrdude -c linuxgpio -C $AVRDUDE_CONF -p $MCU -U lfuse:w:$FUSES_LOW:m -U hfuse:w:$FUSES_HIGH:m -U efuse:w:$FUSES_EXT:m -Uflash:w:$HEX:i $VERBOSE
+avrdude_return=$?
+
+echo 0 > /sys/class/gpio/gpio$GPIO_SPI_OE/value
+
+exit $avrdude_return

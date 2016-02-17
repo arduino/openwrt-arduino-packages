@@ -1,0 +1,218 @@
+#!/bin/sh
+
+# Script to automatically flash Arduino when USB drive containing sketch is connected.
+# It should be called by post_mount scripts.
+# Sketch must be in 'arduino_update' folder, named "[arduino_board_name][user_note].hex"
+# For 'arduino_board_name' format see $g_arduino_names definition, 'user_note' can be empty
+
+g_sketch_folder="arduino_update"
+g_mount_folder="/mnt"
+
+g_arduino_names="
+arduino_avr_uno*.hex
+arduino_avr_leonardo*.hex
+arduino_avr_mega*.hex
+arduino_avr_diecimila*.hex
+arduino_sam_due*.bin
+arduino_sam_zero*.bin
+arduino_avr_yun*.hex
+"
+
+UCI="/sbin/uci"
+
+check_settings()
+{
+	local enabled=`$UCI get "arduino.@arduino[0].usb_autoupdate_sketch"`
+	if [ "x$enabled" == "xtrue" ]
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+
+find_sketch()
+{
+	if [ ! -d $g_mount_folder/sd?? ] 
+	then
+		return 1
+	fi
+
+	# scan all external partitions
+	for fol in `ls -d $g_mount_folder/sd??`
+	do
+		local matched_pattern
+		local matched_pattern_cnt=0
+		local ambig_flag=0
+		if [ -d $fol/$g_sketch_folder ]
+		then
+			# try matching all arduino board names in target folder
+			for arduino_pattern in $g_arduino_names
+			do
+				local match_count=`find $fol/$g_sketch_folder -iname "$arduino_pattern" | wc -l`
+				if [ $match_count -eq 1 ]
+				then
+					matched_pattern=$arduino_pattern
+					matched_pattern_cnt=$(( $matched_pattern_cnt + 1 ))
+				# don't accept ambiguous (more than 1 match) folders
+				elif [ $match_count -gt 1 ]
+				then
+					ambig_flag=1
+					break
+				fi
+			done
+
+			# If only one unambiguous match found...
+			if [ $matched_pattern_cnt -eq 1 ] && [ $ambig_flag -eq 0 ]
+			then
+				g_sketch=`find $fol/$g_sketch_folder -iname $matched_pattern`
+				g_selected_sketch_folder=`dirname "$g_sketch"`
+				g_pattern=$matched_pattern
+				return 0
+			fi
+		fi
+	return 1
+	done
+}
+
+get_mac()
+{
+	mtd_part=`grep "\"art\"" /proc/mtd | awk '{FS=":"; print $1}'`
+	if [ "x$mtd_part" == "x" ]
+	then
+		g_MAC="NO_MAC"
+	else
+		g_MAC=`dd if=/dev/$mtd_part bs=1 skip=4098 count=6 2> /dev/null | hexdump -v -e '1/1 "%02X"'`
+	fi
+}
+
+check_tag()
+{
+	get_mac
+	local match_count=`find $g_selected_sketch_folder -iname "$g_MAC*" | wc -l`
+	if [ $match_count -gt 0 ]
+	then
+		return 1
+	else
+		return 0
+	fi
+}
+
+write_tag()
+{
+	local log=$1
+	local status=$2
+
+	if [ $status -eq 0 ]
+	then
+		local status_str="OK"
+	else
+		local status_str="FAIL"
+	fi
+
+	get_mac
+	echo $log >> $g_selected_sketch_folder/"$g_MAC"_"$status_str"
+	sync
+}
+
+flash_arduino()
+{
+	case $g_pattern in
+	"arduino_avr_uno*.hex")
+		echo "Flash Arduino UNO"
+		run-avrdude "$g_sketch" -q -e0x05 -h0xDE -l0xFF -patmega328p
+		return $?
+	;;
+
+	"arduino_avr_leonardo*.hex")
+		echo "Flash Arduino Leonardo"
+		run-avrdude "$g_sketch" -q -e0xCB -h0xD8 -l0xFF -pm32u4
+		return $?
+	;;
+	
+	"arduino_avr_mega*.hex")
+		echo "Flash Arduino Mega"
+		run-avrdude "$g_sketch" -q -e0xFD -h0xD8 -l0xFF -patmega2560
+		return $?
+	;;
+
+	"arduino_avr_diecimila*.hex")
+		echo "Flash Arduino Diecimila"
+		run-avrdude "$g_sketch" -q -e0x05 -h0xDA -l0xFF -patmega328p
+		return $?
+	;;
+
+	"arduino_sam_due*.bin")
+		echo "Flash Arduino Due"
+		run-bossac -i -d --port=ttyATH0 -U false -e -w -v -b "$g_sketch" -R
+		return $?
+	;;
+	
+	"arduino_sam_zero*.bin")
+		echo "Flash Arduino Zero"
+		run-bossac -i -d --port=ttyATH0 -U false -e -w -v "$g_sketch" -R
+		return $?
+	;;
+	
+	"arduino_avr_yun*.hex")
+		echo "Flash Arduino Yun"
+		if merge-sketch-with-bootloader.lua "$g_sketch"
+		then
+			return 1
+		fi
+		run-avrdude /tmp/sketch.hex -q
+		return $?
+
+	esac
+}
+
+indicate_flash_starting()
+{
+	blink-start 1000
+}
+
+indicate_flash_success()
+{
+	blink-stop
+}
+
+indicate_flash_fail()
+{
+	blink-start 100
+}
+
+
+if ! check_settings;
+then
+	echo "USB auto flash feature disabled in config"
+	exit 1
+fi
+
+if find_sketch;
+then
+	echo "Found sketch '$g_sketch' with pattern '$g_pattern'"
+else
+	echo "Failed to find sketch"
+	exit 1
+fi
+
+if ! check_tag;
+then
+	write_tag "[`date`] Found previous flashing tag" 1
+	echo Found previous flashing tag
+	exit 1
+fi
+
+indicate_flash_starting
+if flash_arduino;
+then
+	write_tag "[`date`] Flashing successful" 0
+	echo "Flashing successful"
+	indicate_flash_success
+	exit 0
+else
+	write_tag "[`date`] Flashing failed" 1
+	echo "Flashing failed"
+	indicate_flash_fail
+	exit 1
+fi

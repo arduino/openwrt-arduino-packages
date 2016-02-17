@@ -1,9 +1,11 @@
 #!/bin/sh
 
-blink-start 100
+PATH=$PATH:/bin:/sbin:/usr/bin
+
+blink-start 100 system
+
+. /sbin/firstboot
 
 reset_has_fo=true
+boot_run_hook jffs2reset
 
-yes | /sbin/firstboot
-
-/sbin/reboot

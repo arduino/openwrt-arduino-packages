@@ -1,0 +1,51 @@
+#!/bin/sh
+
+. /usr/bin/get-gpio-conf
+
+# Enter Bootloader of Zero and Due
+
+#bring Arduino pin 7 low
+echo $GPIO_HANDSHAKE > /sys/class/gpio/export
+echo "high" > /sys/class/gpio/gpio$GPIO_HANDSHAKE/direction
+echo 0 > /sys/class/gpio/gpio$GPIO_HANDSHAKE/value
+
+#enable level converter for Arduino pin 7
+echo 1 > /sys/class/gpio/gpio$GPIO_HANDSHAKE_OE/value
+
+#reset microcontroller to enter progamming mode
+/usr/bin/reset-mcu
+
+
+#we do reset 2 times because Due needs it and Zero implements double-tap boot loader mode
+/usr/bin/reset-mcu
+sleep 1
+
+#disable level converter for Arduino pin 7
+echo 0 > /sys/class/gpio/gpio$GPIO_HANDSHAKE_OE/value
+
+#bring pin 7 high
+echo 1 > /sys/class/gpio/gpio$GPIO_HANDSHAKE/value
+echo $GPIO_HANDSHAKE > /sys/class/gpio/unexport
+
+# update the board
+
+touch /tmp/block_init_askfirst
+
+init_pids=$(pgrep init)
+shell_pids=$(pgrep ash)
+
+#kill init and ash processes that have ttyATH0 opened
+for pid in $init_pids $shell_pids; do
+	blocks=$(ls -l /proc/$pid/fd/ | grep /dev/ttyATH0)
+	if [ "x$blocks" != "x" ]
+	then
+		kill $pid
+	fi
+done
+
+/usr/bin/bossac $@
+bossac_return=$?
+
+rm /tmp/block_init_askfirst
+
+exit $bossac_return

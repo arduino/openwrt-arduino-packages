@@ -1,6 +1,13 @@
 #!/bin/sh
 
-echo "timer" > /sys/class/leds/ds:green:wlan/trigger
-echo $1 > /sys/class/leds/ds:green:wlan/delay_on
-echo $1 > /sys/class/leds/ds:green:wlan/delay_off
+. /usr/bin/get-gpio-conf
 
+LED=$LED_USER
+if [ "$2" = "system" ]
+then
+	LED=$LED_RESET_BLINK
+fi
+
+echo "timer" > /sys/class/leds/$LED/trigger
+echo $1 > /sys/class/leds/$LED/delay_on
+echo $1 > /sys/class/leds/$LED/delay_off

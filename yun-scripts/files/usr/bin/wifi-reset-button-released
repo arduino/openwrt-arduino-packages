@@ -19,9 +19,7 @@ if [ $pressed_for -gt 28 ]
 then
 	logger "resetting to factory"
 	sleep 2
-	reset-to-factory-anyway &
-	sleep 10
-	/sbin/reboot
+	reset-to-factory-anyway && reboot
 	exit 0
 fi
  
@@ -33,5 +31,5 @@ then
 	exit 0
 fi
 
-blink-stop
+blink-stop system
 

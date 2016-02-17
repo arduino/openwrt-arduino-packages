@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=yun-conf
 PKG_VERSION:=1.2.0
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -17,7 +17,7 @@ define Package/yun-conf
   SECTION:=utils
   CATEGORY:=Base system
   TITLE:=Custom Yún configurations
-  DEPENDS:=+base-files +triggerhappy +avahi
+  DEPENDS:=+avahi-daemon +base-files +triggerhappy
 endef
 
 define Package/yun-conf/conffiles

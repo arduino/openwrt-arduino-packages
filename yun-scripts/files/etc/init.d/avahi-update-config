@@ -1,0 +1,15 @@
+#!/bin/sh /etc/rc.common
+
+# Update /etc/avahi/services/arduino.service to announce 
+# correct hardware flavor
+
+START=60
+
+start() {
+	. /lib/ar71xx.sh 
+	case $(ar71xx_board_name) in
+	nuy)
+		sed -i 's/board=yun/description=Yún Shield/g' /etc/avahi/services/arduino.service
+		;;
+	esac
+}

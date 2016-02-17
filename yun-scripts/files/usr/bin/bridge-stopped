@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. /usr/bin/get-gpio-conf
+
+echo 'none' > /sys/class/leds/$LED_USER/trigger

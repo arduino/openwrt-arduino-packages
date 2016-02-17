@@ -3,6 +3,15 @@ config arduino
 	option secure_rest_api true
 	option socket_timeout 5
 	option access_point_wifi_name Arduino
+	option usb_autoupdate_sketch false #broken
+	option arduino_avr_uno 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' -e0x05 -h0xDE -l0xFF -patmega328p 2>&1'
+	option arduino_avr_leonardo 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' -e0xCB -h0xD8 -l0xFF -pm32u4 2>&1'
+	option arduino_avr_mega 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' -e0xFD -h0xD8 -l0xFF -patmega2560 2>&1'
+	option arduino_avr_diecimila 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' -e0x05 -h0xDA -l0xFF -patmega328p 2>&1'
+	option arduino_sam_due 'run-bossac -i -d --port=ttyATH0 -U false -e -w -v -b /tmp/sketch.hex -R'
+	option arduino_sam_zero 'run-bossac -i -d --port=ttyATH0 -U false -e -w -v /tmp/sketch.hex -R'
+	option arduino_avr_yun 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' 2>&1'
+#	option default_target ‘arduino_avr_yun'
 
 config wifi-device 'radio0'
 

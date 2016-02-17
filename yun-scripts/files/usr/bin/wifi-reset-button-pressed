@@ -3,7 +3,7 @@
 rm -f /tmp/wifi.reset
 date +%s > /tmp/wifi.reset
 
-blink-start 100
+blink-start 100 system
 
 logger "wifi reset button pressed"
 
