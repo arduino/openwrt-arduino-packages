@@ -39,7 +39,7 @@ for pid in $init_pids $shell_pids; do
 	blocks=$(ls -l /proc/$pid/fd/ | grep /dev/ttyATH0)
 	if [ "x$blocks" != "x" ]
 	then
-		kill $pid
+		kill -9 $pid
 	fi
 done
 

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+stty -F /dev/ttyATH0 -echo
+
 cd /usr/lib/python2.7/bridge
 
 exec python -u bridge.py 2> /tmp/bridge.py-stderr.log
