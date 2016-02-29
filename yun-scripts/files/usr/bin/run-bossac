@@ -46,6 +46,9 @@ done
 /usr/bin/bossac $@
 bossac_return=$?
 
+#revert serial speed to 250000
+reset-serial /dev/ttyATH0
+
 rm /tmp/block_init_askfirst
 
 exit $bossac_return
