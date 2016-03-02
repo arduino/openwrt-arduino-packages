@@ -4,6 +4,13 @@
 
 # Enter Bootloader of Zero and Due
 
+
+if [ -f /tmp/block_init_askfirst ]; then
+kill -9 `pgrep bossac`
+fi
+
+touch /tmp/block_init_askfirst
+
 #bring Arduino pin 7 low
 echo $GPIO_HANDSHAKE > /sys/class/gpio/export
 echo "high" > /sys/class/gpio/gpio$GPIO_HANDSHAKE/direction
@@ -28,8 +35,6 @@ echo 1 > /sys/class/gpio/gpio$GPIO_HANDSHAKE/value
 echo $GPIO_HANDSHAKE > /sys/class/gpio/unexport
 
 # update the board
-
-touch /tmp/block_init_askfirst
 
 init_pids=$(pgrep init)
 shell_pids=$(pgrep ash)
