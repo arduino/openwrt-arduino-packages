@@ -53,6 +53,8 @@ bossac_return=$?
 
 #revert serial speed to 250000
 reset-serial /dev/ttyATH0
+stty -F /dev/ttyATH0 raw
+stty -F /dev/ttyATH0 -echo
 
 rm /tmp/block_init_askfirst
 
