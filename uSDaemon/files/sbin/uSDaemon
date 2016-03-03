@@ -39,6 +39,9 @@ update_connected_devices()
 				DEVICES="$DEVICES $sd_name"
 			fi
 		fi
+		mountpoint=`ls -d $sd/$sd_name?`
+		echo $mountpoint
+		post_auto_mount /mnt/`basename $mountpoint`
 	done
 }
 
@@ -67,11 +70,7 @@ umount_disconnected_devices()
 }
 
 while [ true ]; do
-	case $(ar71xx_board_name) in
-	yun)
-		umount_disconnected_devices
-		update_connected_devices
-	;;
-	esac
+	umount_disconnected_devices
+	update_connected_devices
 	sleep $TIME
 done
