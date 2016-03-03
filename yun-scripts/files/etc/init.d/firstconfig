@@ -1,0 +1,19 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2010 Jo-Philipp Wich
+
+START=40
+
+USE_PROCD=1
+
+start_service() {
+	FIRST_CONF=`uci get arduino.@arduino[0].first_configuration`
+	if [ x$FIRST_CONF == x1]; then
+		uci set uhttpd.main.redirect_https=0
+		#redirect to cgi script for choosing http/https
+		cp /www/index.html /www/index.html.bak
+		echo '<html>' > /www/index.html
+		echo '<head>' >> /www/index.html
+  		echo '<meta http-equiv="refresh" content="0; url=/cgi-bin/firstconfig.cgi">' >> /www/index.html
+		echo '</head>' >> /www/index.html
+  		echo '</html>' >> /www/index.html
+}

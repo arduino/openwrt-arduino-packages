@@ -2,6 +2,7 @@ config arduino
 	option password 775e9f944188a7bcb36e9ca5dc51672b44bcceeb7d56d89dfb914eb3a1ff2d69
 	option secure_rest_api true
 	option socket_timeout 5
+	option first_configuration 1
 	option access_point_wifi_name Arduino
 	option usb_autoupdate_sketch false #broken
 	option arduino_avr_uno 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' -e0x05 -h0xDE -l0xFF -patmega328p 2>&1'

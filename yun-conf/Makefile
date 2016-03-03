@@ -51,6 +51,7 @@ define Package/yun-conf/install
 	$(INSTALL_DATA) ./files/etc/arduino/wifi_error_reasons.csv.gz $(1)/etc/arduino
 
 	$(INSTALL_DATA) ./files/etc/LININO_CONTRIBUTORS.TXT $(1)/etc/
+	$(INSTALL_DATA) ./files/www/cgi-bin/firstconfig.cgi $(1)/www/cgi-bin/
 endef
 
 $(eval $(call BuildPackage,yun-conf))

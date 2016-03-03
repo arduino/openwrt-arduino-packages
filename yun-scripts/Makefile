@@ -63,6 +63,7 @@ define Package/yun-scripts/install
 	$(INSTALL_BIN) ./files/etc/init.d/rngd-turn-off $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/avahi-update-config $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/webpanel-update-config $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/etc/init.d/firstconfig $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/internet-check-service $(1)/etc/init.d
 endef
 
