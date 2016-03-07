@@ -7,7 +7,8 @@ START=40
 
 start() {
 	FIRST_CONF=`uci get arduino.@arduino[0].first_configuration`
-	if [ x$FIRST_CONF == x1]; then
+	if [ x$FIRST_CONF == x1 ]
+	then
 		uci set uhttpd.main.redirect_https=0
 		#redirect to cgi script for choosing http/https
 		cp /www/index.html /www/index.html.bak
