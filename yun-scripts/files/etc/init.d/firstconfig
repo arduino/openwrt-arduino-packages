@@ -3,9 +3,9 @@
 
 START=40
 
-USE_PROCD=1
+#USE_PROCD=1
 
-start_service() {
+start() {
 	FIRST_CONF=`uci get arduino.@arduino[0].first_configuration`
 	if [ x$FIRST_CONF == x1]; then
 		uci set uhttpd.main.redirect_https=0
