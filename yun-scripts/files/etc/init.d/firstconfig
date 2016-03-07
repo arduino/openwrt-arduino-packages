@@ -16,4 +16,5 @@ start() {
   		echo '<meta http-equiv="refresh" content="0; url=/cgi-bin/firstconfig.cgi">' >> /www/index.html
 		echo '</head>' >> /www/index.html
   		echo '</html>' >> /www/index.html
+	fi
 }
