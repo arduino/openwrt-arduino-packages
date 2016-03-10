@@ -23,7 +23,7 @@ define Package/cpu-mcu-bridge
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=CPU-MCU Bridge
-  DEPENDS:=+python-mini
+  DEPENDS:=+python-light
 endef
 
 define Package/cpu-mcu-bridge/description

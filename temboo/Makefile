@@ -21,7 +21,7 @@ define Package/temboo
   SECTION:=net
   CATEGORY:=Network
   TITLE:=Build Inventive Apps With Ease
-  DEPENDS:=+python-mini
+  DEPENDS:=+python-light
 endef
 
 define Package/temboo/description
