@@ -41,7 +41,10 @@ update_connected_devices()
 		fi
 		mountpoint=`ls -d $sd/$sd_name?`
 		echo $mountpoint
-		post_auto_mount /mnt/`basename $mountpoint`
+		for i in $mountpoint
+		do
+			post_auto_mount /mnt/`basename $i`
+		done
 	done
 }
 
