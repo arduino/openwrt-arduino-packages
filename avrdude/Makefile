@@ -8,12 +8,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=avrdude
-PKG_VERSION:=6.1
+PKG_VERSION:=6.3
 PKG_RELEASE:=1
 
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=git://github.com/facchinm/avrdude.git
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://download.savannah.gnu.org/releases/avrdude
-PKG_MD5SUM:=9db8c25b935d34234b9b1ba16ad55fd5
+PKG_SOURCE_VERSION:=HEAD
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
+PKG_SOURCE_DIR:=$(PKG_NAME)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -22,7 +26,7 @@ define Package/avrdude
   CATEGORY:=Utilities
   TITLE:=AVR Downloader/UploaDEr
   URL:=http://www.bsdhome.com/avrdude/
-  DEPENDS:=+libncurses +libreadline +libusb-compat +libftdi +libelf1 +libftdi1
+  DEPENDS:=+libncurses +libreadline +libusb-compat +libftdi +libelf1 +libftdi1 +hidapi
 endef
 
 define Package/avrdude/description
@@ -45,18 +49,21 @@ CONFIGURE_VARS += \
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
-		install-exec
+		install
+endef
+
+define Build/Configure
+       ( cd $(PKG_BUILD_DIR); ./bootstrap )
+       $(call Build/Configure/Default)
 endef
 
 define Package/avrdude/conffiles
-/etc/avrdude_yun.conf
-/etc/avrdude_nuy.conf
+/etc/avrdude.conf
 endef
 
 define Package/avrdude/install
 	$(INSTALL_DIR) $(1)/etc
-	$(INSTALL_CONF) ./files/avrdude_yun.conf $(1)/etc/
-	$(INSTALL_CONF) ./files/avrdude_nuy.conf $(1)/etc/
+	$(INSTALL_CONF) ./files/avrdude.conf $(1)/etc/
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/avrdude $(1)/usr/bin/
 endef
