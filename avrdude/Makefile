@@ -17,7 +17,6 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_VERSION:=HEAD
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
-PKG_SOURCE_DIR:=$(PKG_NAME)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -38,27 +37,28 @@ define Build/Prepare
 	chmod -R u+w $(PKG_BUILD_DIR)
 endef
 
+define Package/avrdude/conffiles
+/etc/avrdude.conf
+endef
+
 CONFIGURE_ARGS+= \
 	--disable-doc \
 	--disable-parport \
 	--enable-linuxgpio \
 
+PKG_SOURCE_DIR:=$(PKG_NAME)
 CONFIGURE_VARS += \
 	ac_cv_lib_elf_elf_begin=no \
+
+define Build/Configure 
+	( cd $(PKG_BUILD_DIR); ./bootstrap )
+	$(call Build/Configure/Default)
+endef
 
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
 		install
-endef
-
-define Build/Configure
-       ( cd $(PKG_BUILD_DIR); ./bootstrap )
-       $(call Build/Configure/Default)
-endef
-
-define Package/avrdude/conffiles
-/etc/avrdude.conf
 endef
 
 define Package/avrdude/install
