@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cpu-mcu-bridge
-PKG_VERSION:=1.6.0-git
-PKG_RELEASE:=3
+PKG_VERSION:=1.6.1-git
+PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/8devices/YunBridge.git
-PKG_SOURCE_VERSION:=2367df9f9fd1bd4d2e5d7e9bbbe7f27bce304edb
+PKG_SOURCE_URL:=https://github.com/arduino/YunBridge.git
+PKG_SOURCE_VERSION:=f94eb0d6bac5843703b1e482d0a85113087b8d6e
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
