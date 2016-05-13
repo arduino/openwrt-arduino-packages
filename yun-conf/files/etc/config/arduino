@@ -11,7 +11,7 @@ config arduino
 	option arduino_avr_diecimila 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' -patmega328p 2>&1'
 	option arduino_sam_due 'run-bossac -i -d --port=ttyATH0 -U false -e -w -v -b /tmp/sketch.hex -R'
 	option arduino_sam_zero 'run-bossac -i -d --port=ttyATH0 -U false -e -w -v /tmp/sketch.hex -R'
-	option arduino_avr_yun 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' 2>&1'
+	option arduino_yun 'run-avrdude /tmp/sketch.hex '\''-q -q'\'' 2>&1'
 #	option default_target 'arduino_yun'
 
 config wifi-device 'radio0'
