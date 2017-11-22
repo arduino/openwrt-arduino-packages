@@ -17,7 +17,7 @@ define Package/yun-scripts
   SECTION:=utils
   CATEGORY:=Base system
   TITLE:=Custom Yún scripts
-  DEPENDS:=+kmod-loop +kmod-spi-gpio-custom
+  DEPENDS:=+kmod-loop +kmod-spi-gpio-custom +kmod-usb-storage +kmod-scsi-core +kmod-scsi-generic +kmod-fs-msdos
 endef
 
 define Build/Compile
