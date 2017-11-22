@@ -3,9 +3,9 @@
 # Resolve differences between different GPIO configurations
 
 . /lib/ar71xx.sh
-
-case $(ar71xx_board_name) in
-nuy)
+ar71xx_board_detect
+case $AR71XX_BOARD_NAME in
+arduino-yun-shield)
 	GPIO_MCU_RESET=12
 	GPIO_SPI_OE=22
 	GPIO_HANDSHAKE_OE=16
@@ -16,15 +16,15 @@ nuy)
 	LED_RESET_BLINK="yun-shield:white:system"
 	LED_USER="yun-shield:red:user"
 	;;
-yun)
+arduino-yun)
 	GPIO_MCU_RESET=18
 	GPIO_SPI_OE=21
 	GPIO_HANDSHAKE_OE=22
 	GPIO_UART_OE=23
 	GPIO_HANDSHAKE=19
 	AVRDUDE_CONF="/etc/avrdude_yun.conf"
-	LED_BOOT_DONE="ds:green:usb"
-	LED_RESET_BLINK="ds:green:wlan"
-	LED_USER="ds:green:wlan"
+	LED_BOOT_DONE="arduino:white:usb"
+	LED_RESET_BLINK="arduino:blue:wlan"
+	LED_USER="arduino:blue:wlan"
 	;;
 esac

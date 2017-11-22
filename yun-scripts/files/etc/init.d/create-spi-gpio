@@ -5,12 +5,13 @@
 START=60
 
 start() {
-	. /lib/ar71xx.sh 
-	case $(ar71xx_board_name) in
-	yun)
+	. /lib/ar71xx.sh
+	ar71xx_board_detect
+	case $AR71XX_BOARD_NAME in
+	arduino-yun)
 		insmod spi-gpio-custom bus0=1,11,27,8,0,125000
 		;;
-	nuy)
+	arduino-yun-shield)
 		insmod spi-gpio-custom bus0=1,19,20,21,0,125000
 		;;
 	esac

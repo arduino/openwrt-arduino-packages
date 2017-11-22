@@ -37,11 +37,11 @@ define Package/yun-conf/install
 	$(INSTALL_DIR) $(1)/etc/triggerhappy/triggers.d
 	$(INSTALL_DIR) $(1)/www/cgi-bin
 
-	$(INSTALL_CONF) ./files/etc/avahi/services/arduino.service $(1)/etc/avahi/services/
-	$(INSTALL_CONF) ./files/etc/triggerhappy/triggers.d/reset.conf $(1)/etc/triggerhappy/triggers.d
+	$(INSTALL_DATA) ./files/etc/avahi/services/arduino.service $(1)/etc/avahi/services/
+	$(INSTALL_DATA) ./files/etc/triggerhappy/triggers.d/reset.conf $(1)/etc/triggerhappy/triggers.d
 
-	$(INSTALL_CONF) ./files/etc/httpd.conf $(1)/etc/
-	$(INSTALL_CONF) ./files/etc/config/arduino $(1)/etc/config/
+	$(INSTALL_DATA) ./files/etc/httpd.conf $(1)/etc/
+	$(INSTALL_DATA) ./files/etc/config/arduino $(1)/etc/config/
 
 	$(INSTALL_DATA) ./files/etc/arduino/Caterina-Yun.hex $(1)/etc/arduino/
 	$(INSTALL_CONF) ./files/etc/arduino/openwrt-yun-release $(1)/etc/arduino/

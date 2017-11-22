@@ -6,9 +6,12 @@
 START=60
 
 start() {
-	. /lib/ar71xx.sh 
-	case $(ar71xx_board_name) in
-	yun)
+	. /lib/ar71xx.sh
+	ar71xx_board_detect
+	case $AR71XX_BOARD_NAME in
+	arduino-yun-shield)
+		;;
+	*)
 		sed -i '/default_target/s/^#//g' /etc/config/arduino
 		;;
 	esac

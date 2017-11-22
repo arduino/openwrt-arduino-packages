@@ -10,7 +10,7 @@ start() {
 	if [ x$FIRST_CONF == x1 ]
 	then
 		uci set uhttpd.main.redirect_https=0
-		uci set uci get arduino.@arduino[0].first_configuration=0
+		uci set arduino.@arduino[0].first_configuration=0
 		uci commit
 		#redirect to cgi script for choosing http/https
 		#cp /www/index.html /www/index.html.bak

@@ -1,9 +1,17 @@
 #!/bin/sh
 
 . /usr/bin/get-gpio-conf
-. /lib/ar71xx.sh 
+. /lib/ar71xx.sh
+ar71xx_board_detect
 
-LINUXSPI=linuxspi_$(ar71xx_board_name)
+case $AR71XX_BOARD_NAME in
+arduino-yun-shield)
+	LINUXSPI=linuxspi_nuy
+	;;
+arduino-yun)
+	LINUXSPI=linuxspi_yun
+	;;
+esac
 
 HEX=$1
 
