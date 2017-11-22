@@ -59,6 +59,7 @@ define Package/yun-scripts/install
 	$(INSTALL_BIN) ./files/etc/init.d/rename-wifi-if-access-point $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/generate_new_gpg_key $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/delete_uhttpd_cert $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/etc/init.d/enable-rngd $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/handle_wifi_reset $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/rngd-turn-off $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/avahi-update-config $(1)/etc/init.d
