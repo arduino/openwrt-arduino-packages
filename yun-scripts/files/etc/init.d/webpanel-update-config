@@ -12,7 +12,8 @@ start() {
 	arduino-yun-shield)
 		;;
 	*)
-		sed -i '/default_target/s/^#//g' /etc/config/arduino
+		uci set arduino.@arduino[0].default_target='arduino_yun'
+		uci commit
 		;;
 	esac
 }
