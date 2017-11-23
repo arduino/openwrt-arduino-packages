@@ -15,16 +15,23 @@ if not uploaded_sketch then
 end
 
 local sketch = {}
+local merge = true
 for line in uploaded_sketch:lines(uploaded_name) do
   table.insert(sketch, line)
+  -- check if the file being uploaded has already been merged
+  if string.sub(line,1,string.len(":10700000"))==":10700000" then
+    merge = false
+  end
 end
 uploaded_sketch:close()
 
---removes last line
-table.remove(sketch)
+if merge then
+  --removes last line
+  table.remove(sketch)
 
-for line in io.lines("/etc/arduino/Caterina-Yun.hex") do
-  table.insert(sketch, line)
+  for line in io.lines("/etc/arduino/Caterina2-Yun.hex") do
+    table.insert(sketch, line)
+  end
 end
 
 local final_sketch = io.open(uploaded_name, "w+")
