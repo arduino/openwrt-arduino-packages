@@ -34,11 +34,11 @@ define Package/yun-conf/install
 	$(INSTALL_DIR) $(1)/etc/avahi/services
 	$(INSTALL_DIR) $(1)/etc/arduino
 	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_DIR) $(1)/etc/triggerhappy/triggers.d
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/button
 	$(INSTALL_DIR) $(1)/www/cgi-bin
 
 	$(INSTALL_DATA) ./files/etc/avahi/services/arduino.service $(1)/etc/avahi/services/
-	$(INSTALL_DATA) ./files/etc/triggerhappy/triggers.d/reset.conf $(1)/etc/triggerhappy/triggers.d
+	$(INSTALL_DATA) ./files/etc/hotplug.d/button/buttons $(1)/etc/hotplug.d/button/
 
 	$(INSTALL_DATA) ./files/etc/httpd.conf $(1)/etc/
 	$(INSTALL_DATA) ./files/etc/config/arduino $(1)/etc/config/

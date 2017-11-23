@@ -1,0 +1,13 @@
+#!/bin/sh
+
+logger Button $BUTTON $ACTION
+
+if [ x$BUTTON == xwps ]
+then
+	if [ x$ACTION == xpressed ]
+	then
+		/usr/bin/wifi-reset-button-pressed
+	else
+		/usr/bin/wifi-reset-button-released
+	fi
+fi
