@@ -17,7 +17,7 @@ define Package/yun-conf
   SECTION:=utils
   CATEGORY:=Base system
   TITLE:=Custom Yún configurations
-  DEPENDS:=+avahi-daemon +base-files +triggerhappy
+  DEPENDS:=+avahi-daemon +base-files
 endef
 
 define Package/yun-conf/conffiles
@@ -43,7 +43,7 @@ define Package/yun-conf/install
 	$(INSTALL_DATA) ./files/etc/httpd.conf $(1)/etc/
 	$(INSTALL_DATA) ./files/etc/config/arduino $(1)/etc/config/
 
-	$(INSTALL_DATA) ./files/etc/arduino/Caterina-Yun.hex $(1)/etc/arduino/
+	$(INSTALL_DATA) ./files/etc/arduino/Caterina2-Yun.hex $(1)/etc/arduino/
 	$(INSTALL_CONF) ./files/etc/arduino/openwrt-yun-release $(1)/etc/arduino/
 	sed -i "s/DATE/`date`/g" $(1)/etc/arduino/openwrt-yun-release
 	$(INSTALL_CONF) ./files/etc/arduino/gpg_gen_key_batch $(1)/etc/arduino/
@@ -51,7 +51,6 @@ define Package/yun-conf/install
 	$(INSTALL_DATA) ./files/etc/arduino/wifi_error_statuses.csv.gz $(1)/etc/arduino
 	$(INSTALL_DATA) ./files/etc/arduino/wifi_error_reasons.csv.gz $(1)/etc/arduino
 
-	$(INSTALL_DATA) ./files/etc/LININO_CONTRIBUTORS.TXT $(1)/etc/
 	$(INSTALL_BIN) ./files/www/cgi-bin/firstconfig.cgi $(1)/www/cgi-bin/
 endef
 
