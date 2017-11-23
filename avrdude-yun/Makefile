@@ -7,28 +7,28 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=avrdude
+PKG_NAME:=avrdude-yun
 PKG_VERSION:=6.3
 PKG_RELEASE:=2
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git://github.com/facchinm/avrdude.git
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_VERSION:=0b2aec2fa7bf96843c2521e53357d458797e3004
+PKG_SOURCE_VERSION:=770e4c2099d7246d238143436213eb459d5ffafb
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/avrdude
+define Package/avrdude-yun
   SECTION:=utils
   CATEGORY:=Utilities
-  TITLE:=AVR Downloader/UploaDEr
+  TITLE:=AVR Downloader/UploaDEr (Yun version)
   URL:=http://www.bsdhome.com/avrdude/
   DEPENDS:=+libncurses +libreadline +libusb-compat +libftdi +libelf1 +libftdi1 +hidapi
 endef
 
-define Package/avrdude/description
+define Package/avrdude-yun/description
  AVRDUDE is a full featured program for programming Atmel's AVR CPU's.
 endef
 
@@ -37,7 +37,7 @@ define Build/Prepare
 	chmod -R u+w $(PKG_BUILD_DIR)
 endef
 
-define Package/avrdude/conffiles
+define Package/avrdude-yun/conffiles
 /etc/avrdude.conf
 endef
 
@@ -61,11 +61,11 @@ define Build/Compile
 		install
 endef
 
-define Package/avrdude/install
+define Package/avrdude-yun/install
 	$(INSTALL_DIR) $(1)/etc
 	$(INSTALL_CONF) ./files/avrdude.conf $(1)/etc/
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/avrdude $(1)/usr/bin/
 endef
 
-$(eval $(call BuildPackage,avrdude))
+$(eval $(call BuildPackage,avrdude-yun))
