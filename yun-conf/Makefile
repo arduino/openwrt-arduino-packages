@@ -35,6 +35,7 @@ define Package/yun-conf/install
 	$(INSTALL_DIR) $(1)/etc/arduino
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DIR) $(1)/etc/hotplug.d/button
+	$(INSTALL_DIR) $(1)/etc/opkg/keys
 	$(INSTALL_DIR) $(1)/www/cgi-bin
 
 	$(INSTALL_DATA) ./files/etc/avahi/services/arduino.service $(1)/etc/avahi/services/
@@ -42,6 +43,8 @@ define Package/yun-conf/install
 
 	$(INSTALL_DATA) ./files/etc/httpd.conf $(1)/etc/
 	$(INSTALL_DATA) ./files/etc/config/arduino $(1)/etc/config/
+
+	$(INSTALL_CONF) ./files/etc/opkg/keys/* $(1)/etc/opkg/keys/
 
 	$(INSTALL_DATA) ./files/etc/arduino/Caterina2-Yun.hex $(1)/etc/arduino/
 	$(INSTALL_CONF) ./files/etc/arduino/openwrt-yun-release $(1)/etc/arduino/
