@@ -17,7 +17,7 @@ PKG_SOURCE_URL:=http://registry.npmjs.org/$(PKG_NPM_NAME)/-/
 PKG_MD5SUM:=7b23768a859c6726ef321b50e67f4cc7
 
 PKG_BUILD_DEPENDS:=node/host
-PKG_NODE_VERSION:=0.12.7
+PKG_NODE_VERSION:=6.11.2
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -40,25 +40,17 @@ define Build/Prepare
 endef
 
 define Build/Compile
-	CC="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc" \
-	CXX="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
-	AR="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ar" \
-	RANLIB="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ranlib" \
-	LINK="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
-	LD="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
-	PATH="/usr/bin/:$(PATH)" \
-	GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions=false" \
-	LDFLAGS="-L$(TOOLCHAIN_DIR)/lib/ -Wl,-rpath-link $(TOOLCHAIN_DIR)/lib/" \
-	npm_config_arch=mips \
+	$(MAKE_FLAGS) \
+	npm_config_arch=$(CONFIG_ARCH) \
 	npm_config_nodedir=$(BUILD_DIR)/node-v$(PKG_NODE_VERSION)/ \
+	npm_config_cache=$(BUILD_DIR)/node-v$(PKG_NODE_VERSION)/npm-cache \
 	PREFIX="$(PKG_INSTALL_DIR)/usr/" \
-	$(STAGING_DIR)/host/bin/npm install -g $(PKG_BUILD_DIR)
+	npm install --build-from-source --target_arch=$(CPU) -g $(PKG_BUILD_DIR)
 endef
 
 define Package/node-socket.io-client-legacy/install
 	mkdir -p $(1)/usr/lib/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules $(1)/usr/lib/
-	rm -rf $(1)/usr/lib/node_modules/$(PKG_NPM_NAME)/node_modules/ws
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules/* $(1)/usr/lib/node/
 endef
 
 $(eval $(call BuildPackage,node-socket.io-client-legacy))
