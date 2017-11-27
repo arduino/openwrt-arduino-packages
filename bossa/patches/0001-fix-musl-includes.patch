@@ -1,0 +1,13 @@
+Index: bossa-1.7.0/src/PosixSerialPort.cpp
+===================================================================
+--- bossa-1.7.0.orig/src/PosixSerialPort.cpp
++++ bossa-1.7.0/src/PosixSerialPort.cpp
+@@ -35,6 +35,8 @@
+ #include <errno.h>
+ #include <termios.h>
+ #include <errno.h>
++#include <time.h>
++#include <sys/select.h>
+ 
+ #include <string>
+ 
