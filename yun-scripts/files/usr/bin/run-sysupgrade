@@ -5,5 +5,11 @@ cp "$1" /tmp || exit 1
 
 filename=`basename $1`
 
+blink-start 100 system
+
+#always recreate gpg and rsa keys when sysupgrading
+uci set arduino.@arduino[0].first_configuration='1'
+uci commit
+
 exec sysupgrade -n "/tmp/$filename"
 
