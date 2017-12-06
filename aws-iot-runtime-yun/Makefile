@@ -38,7 +38,7 @@ endef
 
 define Package/aws-iot-runtime-yun/install
 	$(INSTALL_DIR) $(1)/usr/lib/python2.7/AWS-IoT-Python-Runtime/
-	$(CP) -r $(PKG_BUILD_DIR)/AWS-IoT-Python-Runtime/ $(1)/usr/lib/python2.7/AWS-IoT-Python-Runtime/
+	$(CP) -r $(PKG_BUILD_DIR)/AWS-IoT-Python-Runtime/ $(1)/usr/lib/python2.7/
 endef
 
 $(eval $(call BuildPackage,aws-iot-runtime-yun))
