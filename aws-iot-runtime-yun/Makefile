@@ -9,12 +9,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=aws-iot-runtime-yun
 PKG_VERSION:=2.2.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/aws/aws-iot-device-sdk-arduino-yun.git
+PKG_SOURCE_URL:=https://github.com/facchinm/aws-iot-device-sdk-arduino-yun.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=39e62018770f49bcb92451ea7a83faf95c753aa8
+PKG_SOURCE_VERSION:=8e54af98992dc7847b8bd9fd767f2ee9eb4813fc
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
 include $(INCLUDE_DIR)/package.mk
