@@ -19,34 +19,25 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
 HOST_BUILD_DEPENDS:=python/host
 
-include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 $(call include_mk, python-package.mk)
 
-define Package/aws-iot-device-sdk/Default
+define Package/aws-iot-device-sdk
+  TITLE:=aws-iot-device-sdk
+  DEPENDS:=+python-light
   SECTION:=lang
   CATEGORY:=Languages
   SUBMENU:=Python
   URL:=https://github.com/aws/aws-iot-device-sdk-python
 endef
 
-define Package/aws-iot-device-sdk
-$(call Package/aws-iot-device-sdk/Default)
-  TITLE:=aws-iot-device-sdk
-  DEPENDS:=+python-light
-endef
-
 define Package/aws-iot-device-sdk/description
 Amazon AWS IoT SDK for Python
 endef
 
-define Host/Compile
-	$(call Build/Compile/HostPyMod,,install --prefix="" --root="$(STAGING_DIR_HOSTPKG)")
+define Build/Compile
+	$(call Build/Compile/PyMod,,install --prefix="/usr" --root="$(PKG_INSTALL_DIR)")
 endef
-
-Host/Install:=
-
-$(eval $(call HostBuild))
 
 $(eval $(call PyPackage,aws-iot-device-sdk))
 $(eval $(call BuildPackage,aws-iot-device-sdk))
