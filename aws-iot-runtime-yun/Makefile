@@ -17,10 +17,7 @@ PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=39e62018770f49bcb92451ea7a83faf95c753aa8
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
-HOST_BUILD_DEPENDS:=python/host
-
 include $(INCLUDE_DIR)/package.mk
-$(call include_mk, python-package.mk)
 
 define Package/aws-iot-runtime-yun
   TITLE:=aws-iot-runtime-yun
