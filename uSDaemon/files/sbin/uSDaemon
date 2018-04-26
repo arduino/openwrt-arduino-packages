@@ -73,6 +73,7 @@ umount_disconnected_devices()
 }
 
 while [ true ]; do
+	block info
 	umount_disconnected_devices
 	update_connected_devices
 	sleep $TIME
