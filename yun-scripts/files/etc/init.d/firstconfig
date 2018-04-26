@@ -14,6 +14,11 @@ start() {
 		KEY=`uci get uhttpd.main.key`
 		rm -f $CERT $KEY
 
+		# clone eth0 mac address to eth1
+		mac_addr_eth0=`ifconfig eth0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'`
+		uci set network.wan.macaddr=$mac_addr_eth0
+		uci commit network
+
 		uci set uhttpd.main.redirect_https=0
 		uci set arduino.@arduino[0].first_configuration=0
 		uci commit
